@@ -1,9 +1,12 @@
 <script lang="ts">
 	// import {api} from '../../global'
 	import {getThenUpdate} from '../stores/fixtureStore'
-	// window.api.onServerUpdated((params) =>{
-	// 	getThenUpdate()
-	// })
+	 
+	
+	window.api.onServerUpdated((params) =>{
+		console.log(params)
+		getThenUpdate()
+	})
 
 
 
@@ -13,7 +16,7 @@
 		data = [...data, [...newRow]]
 		newRow = columns
 	}
-	function deleteRow(rowToBeDeleted) {
+	function deleteRow(rowToBeDeleted: string[]) {
 		data = data.filter(row => row != rowToBeDeleted)
 	}
 	let columns = ["Name", "Email", "Phone Number"]

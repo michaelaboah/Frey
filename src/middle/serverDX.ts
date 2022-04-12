@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import  { Wrap} from '../../src/global';
 import {EventEmitter} from 'events'
+import cors from 'cors';
 
 
 let inbox: Wrap = {VWInfo: [], LightingDevices: []}
@@ -9,6 +10,7 @@ export const startDXServer = () =>{
     const server = express();
     server.use(express.json({limit: '5000mb'})); 
     server.use(express.urlencoded({limit: '5000mb'}));
+    server.use(cors())
     const port = 29212; // default port to listen
 
     // define a route handler for the default home page
