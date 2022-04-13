@@ -1,14 +1,14 @@
 <script lang="ts">
-	// import {api} from '../../global'
+	import {lights} from '../stores/fixtureStore'
 	import {getThenUpdate} from '../stores/fixtureStore'
 	 
 	
-	window.api.onServerUpdated((params) =>{
+	window.api.onServerUpdated(async (params) =>{
 		console.log(params)
-		getThenUpdate()
+		console.log( await getThenUpdate())
 	})
 
-
+	
 
 
 	function addRow() {
@@ -31,6 +31,7 @@
 </script>
 
 <table>
+	<h1>{$lights}</h1>
 	<tr>
 		{#each columns as column}
 			<th>{column}</th>
