@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-
+// import api from '../../global'
 
 
 const createStore = () =>{
@@ -22,13 +22,23 @@ const createStore = () =>{
     return {subscribe, increment, set, decrement}
 }
 
-export const getThenUpdate = () =>{
-    fetch("http://localhost:29212/VectorworksGet")
-    .then(data => {
-        return data.json();
-    }).then(post => {
-        console.log(post)
-    })
+
+export const getThenUpdate = async ():Promise<JSON> =>{
+    const reponse = await fetch("http://localhost:29212/VectorworksGet")
+    return await reponse.json();
 }
 
+
+
+
+const updateLights = () =>{
+    // const {subscribe, set} = writable<JSON>()
+    // window.api.onServerUpdated(async (params) =>{
+    //     let lxData = await getThenUpdate();
+    //     set(lxData);     
+    // })
+    // return {subscribe}
+}
+
+export const lights = updateLights()
 export const count = createStore();
