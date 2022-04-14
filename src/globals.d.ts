@@ -1,10 +1,12 @@
 /// <reference types="svelte" />
 
-import APP_BRIDGE from "../src/electron/preload";
+// import APP_BRIDGE from "./electron/preload"
 
-declare global {
-    interface Window {api: typeof APP_BRIDGE}
-}
+// declare global {
+//   interface Window {api: typeof APP_BRIDGE}
+// }
+
+
 
 export interface LightingDevice {
     coordinates: number[]

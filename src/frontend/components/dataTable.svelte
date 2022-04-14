@@ -1,13 +1,14 @@
 <script lang="ts">
 	import {lights} from '../stores/fixtureStore'
-	import {getThenUpdate} from '../stores/fixtureStore'
+	// import {VWInfo} from '../../globals'
+	// import {getThenUpdate} from '../stores/fixtureStore'
 	 
 	
-	window.api.onServerUpdated(async (params) =>{
-		console.log(params)
-		console.log( await getThenUpdate())
+	$: fixtues = $lights.map((x, i) => {
+		const {channel, instrumentType, } = x
+		return {id:i, channel, instrumentType}
 	})
-
+	
 	
 
 
@@ -19,7 +20,7 @@
 	function deleteRow(rowToBeDeleted: string[]) {
 		data = data.filter(row => row != rowToBeDeleted)
 	}
-	let columns = ["Name", "Email", "Phone Number"]
+	let columns = ["Channel", "Email", "Phone Number"]
 	let data = [
     ["John", "john@example.com", "(353) 01 222 3333"],
     ["Sarah", "sarah@gmail.com", "(01) 22 888 4444"],
@@ -31,26 +32,28 @@
 </script>
 
 <table>
-	<h1>{$lights}</h1>
+	<!-- <h1>{$lights}</h1> -->
 	<tr>
 		{#each columns as column}
 			<th>{column}</th>
 		{/each}
 	</tr>
 	
-	{#each data as row}
-		<tr>
-			{#each row as cell}
+	{#each fixtues as row}
+		<tr contenteditable="true">
+			<!-- {#each row as cell}
 			<td contenteditable="true" bind:innerHTML={cell} />
 			{/each}
-			<button on:click={() => deleteRow(row)}>X</button>
+			<button on:click={() => deleteRow(row)}>X</button> -->
+			<td>{row.channel.toString()}</td>
+			<td>{row.instrumentType.toString()}</td>
+			<td>{row.id.toString()}</td>
 		</tr>
 	{/each}
 	<tr style="color: grey">
 		{#each newRow as column}
 			<td contenteditable="true" bind:innerHTML={column} />
 		{/each}
-		<button on:click={addRow}>add</button>
 	</tr>
 	<pre style="background: #eee">{JSON.stringify(data, null, 2)}</pre>
 </table>

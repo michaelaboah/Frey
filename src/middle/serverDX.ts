@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import  { Wrap} from '../../src/global';
+import  {Wrap} from '../../src/globals';
 import {EventEmitter} from 'events'
 import cors from 'cors';
 
