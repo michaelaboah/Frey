@@ -29,14 +29,12 @@ export const getThenUpdate = async ():Promise<Wrap> =>{
 }
 
 
-
-
 const updateLights = () =>{
     const {subscribe, set} = writable<Wrap>({VWInfo:[], LightingDevices:[]})
     //@ts-expect-error
     window.api.onServerUpdated(async (params) =>{
         let refinedData: Wrap = await getThenUpdate();
-        console.log(refinedData)
+        // console.log(refinedData)
         set(refinedData);     
     })
     return {subscribe}
