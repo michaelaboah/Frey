@@ -5,8 +5,8 @@
 	 
 	
 	$: fixtues = $lights.map((x, i) => {
-		const {channel, instrumentType, } = x
-		return {id:i, channel, instrumentType}
+		const {channel, instrumentType, position, purpose, unitNumber, wattage, template1, color, patch, userField1, userField2} = x
+		return {channel, instrumentType, position, purpose, unitNumber, wattage, template1, color, patch, userField1, userField2}
 	})
 	
 	
@@ -20,7 +20,7 @@
 	function deleteRow(rowToBeDeleted: string[]) {
 		data = data.filter(row => row != rowToBeDeleted)
 	}
-	let columns = ["Channel", "Email", "Phone Number"]
+	let columns = ["Channel", "Symbol", "Position", "Purpose", "Unit #", "Load", "Accessory", "Color", "Patch", "User 1", "User 2"]
 	let data = [
     ["John", "john@example.com", "(353) 01 222 3333"],
     ["Sarah", "sarah@gmail.com", "(01) 22 888 4444"],
@@ -47,7 +47,16 @@
 			<button on:click={() => deleteRow(row)}>X</button> -->
 			<td>{row.channel.toString()}</td>
 			<td>{row.instrumentType.toString()}</td>
-			<td>{row.id.toString()}</td>
+			<td>{row.position.toString()}</td>
+			<td>{row.purpose.toString()}</td>
+			<td>{row.unitNumber.toString()}</td>
+			<td>{row.wattage.toString()}</td>
+			<td>{row.template1.toString()}</td>
+			<td>{row.color.toString()}</td>
+			<td>{row.patch.toString()}</td>
+			<td>{row.userField1.toString()}</td>
+			<td>{row.userField2.toString()}</td>
+			<!-- <td>{row.position.toString()}</td> -->
 		</tr>
 	{/each}
 	<tr style="color: grey">
@@ -55,7 +64,7 @@
 			<td contenteditable="true" bind:innerHTML={column} />
 		{/each}
 	</tr>
-	<pre style="background: #eee">{JSON.stringify(data, null, 2)}</pre>
+	<!-- <pre style="background: #eee">{JSON.stringify(data, null, 2)}</pre> -->
 </table>
 
 <style>
