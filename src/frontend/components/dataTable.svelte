@@ -1,10 +1,10 @@
 <script lang="ts">
-	import {lights} from '../stores/fixtureStore'
+	import {inboundData} from '../stores/fixtureStore'
 	// import {VWInfo} from '../../globals'
 	// import {getThenUpdate} from '../stores/fixtureStore'
 	 
 	
-	$: fixtues = $lights.map((x, i) => {
+	$: fixtues = $inboundData.LightingDevices.map((x, i) => {
 		const {channel, instrumentType, position, purpose, unitNumber, wattage, template1, color, patch, userField1, userField2} = x
 		return {channel, instrumentType, position, purpose, unitNumber, wattage, template1, color, patch, userField1, userField2}
 	})

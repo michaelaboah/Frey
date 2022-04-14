@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import type { LightingDevice, Wrap,  } from '../../globals'
+import type {Wrap,  } from '../../globals'
 
 
 const createStore = () =>{
@@ -32,15 +32,15 @@ export const getThenUpdate = async ():Promise<Wrap> =>{
 
 
 const updateLights = () =>{
-    const {subscribe, set} = writable<LightingDevice[]>([])
+    const {subscribe, set} = writable<Wrap>({VWInfo:[], LightingDevices:[]})
     //@ts-expect-error
     window.api.onServerUpdated(async (params) =>{
         let refinedData: Wrap = await getThenUpdate();
         console.log(refinedData)
-        set(refinedData.LightingDevices);     
+        set(refinedData);     
     })
     return {subscribe}
 }
 
-export const lights = updateLights()
+export const inboundData = updateLights()
 export const count = createStore();
