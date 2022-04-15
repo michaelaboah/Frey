@@ -30,5 +30,6 @@ footer {
     width: 100%;
     height: 1.5rem;            /* Footer height */
     margin-top: -180;
+    font-size: small;
 }
 </style>

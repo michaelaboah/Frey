@@ -1,10 +1,9 @@
 <script lang="ts">
 	import {inboundData} from '../stores/fixtureStore'
-	// import {VWInfo} from '../../globals'
-	// import {getThenUpdate} from '../stores/fixtureStore'
+
 	 
 	
-	$: fixtues = $inboundData.LightingDevices.map((x) => {
+	$: fixtures = $inboundData.LightingDevices.map((x) => {
 		const {channel, instrumentType, position, purpose, unitNumber, wattage, template1, color, patch, userField1, userField2} = x
 		return {channel, instrumentType, position, purpose, unitNumber, wattage, template1, color, patch, userField1, userField2}
 	})
@@ -22,7 +21,7 @@
 		{/each}
 	</tr>
 	
-	{#each fixtues as row}
+	{#each fixtures as row}
 		<tr >
 			<!-- {#each row as cell}
 			<td contenteditable="true" bind:innerHTML={cell} />

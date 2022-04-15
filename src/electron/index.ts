@@ -1,7 +1,4 @@
-import {
-  app,
-  BrowserWindow,
-  Notification,
+import {app, BrowserWindow, Menu, Notification,
   // nativeImage
 } from "electron";
 import { join } from "path";
@@ -10,6 +7,7 @@ import { autoUpdater } from "electron-updater";
 import { events, startDXServer} from '../middle/serverDX'
 import logger from "./utils/logger";
 import settings from "./utils/settings";
+import { menuExtended, } from "./menu";
 
 const isProd = process.env.NODE_ENV === "production" || app.isPackaged;
 
@@ -54,7 +52,15 @@ const createWindow = () => {
   startDXServer()
 };
 
-app.on("ready", createWindow);
+app.on("ready", () =>{
+  createWindow()
+
+  //Adds more menus to the ones that already exist on Macos
+  const menu = Menu.getApplicationMenu()
+  menu?.items[2]
+  menuExtended.forEach(i => menu?.append(i))
+  Menu.setApplicationMenu(menu)
+});
 
 // those two events are completely optional to subscrbe to, but that's a common way to get the
 // user experience people expect to have on macOS: do not quit the application directly

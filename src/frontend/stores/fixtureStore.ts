@@ -34,7 +34,6 @@ const updateLights = () =>{
     //@ts-expect-error
     window.api.onServerUpdated(async (params) =>{
         let refinedData: Wrap = await getThenUpdate();
-        // console.log(refinedData)
         set(refinedData);     
     })
     return {subscribe}
