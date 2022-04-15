@@ -22,21 +22,33 @@ const createStore = () =>{
     return {subscribe, increment, set, decrement}
 }
 
-
-export const getThenUpdate = async ():Promise<Wrap> =>{
-    const reponse = await fetch("http://localhost:29212/VectorworksGet")
+//Get Vectorworks Data from DX server to UI
+export const getFromDX = async ():Promise<Wrap> =>{
+    const reponse = await fetch("http://localhost:29212/FreyurGet")
     return await reponse.json();
+}
+
+//Send Changed Data from UI to DX server
+export const sendToVW = async (changes:Wrap)=> {
+    const request = await fetch("http://localhost:29212/FreyurPost", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          },
+          body: JSON.stringify(changes)
+    })
+    console.log(request.status)
 }
 
 
 const updateLights = () =>{
-    const {subscribe, set} = writable<Wrap>({VWInfo:[], LightingDevices:[]})
+    const {subscribe, set, update} = writable<Wrap>({VWInfo:[], LightingDevices:[]})
     //@ts-expect-error
     window.api.onServerUpdated(async (params) =>{
-        let refinedData: Wrap = await getThenUpdate();
+        let refinedData: Wrap = await getFromDX();
         set(refinedData);     
     })
-    return {subscribe}
+    return {subscribe, update}
 }
 
 export const inboundData = updateLights()

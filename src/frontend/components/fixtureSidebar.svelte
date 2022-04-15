@@ -4,43 +4,36 @@
 <script lang="ts">
   import { fly } from 'svelte/transition';
   import Modal from './Modal.svelte';
-  // import {inboundData} from '../stores/fixtureStore'
-  // import type {LightingDevice,  } from '../../globals'
+  import {inboundData} from '../stores/fixtureStore'
 
   export let show = false;
   let modal_show = false;
 
-  // $:lxLabels = $inboundData.LightingDevices.map((x) =>{
-  //   return lxLabels.forEach(i =>{
-  //     if ($inboundData.LightingDevices.includes(i)) {
-  //     $inboundData.LightingDevices.push(i)
-  //   }
-  //   })
-  // })
-  
-  // forEach(i => {
 
-  // });
+  $:lxLabels = $inboundData?.LightingDevices.map(label => label.instrumentType)
+  .filter((item, index, array) => array.indexOf(item) == index);
 
-  const columns = ["Instrument", "Current Total"]
+// let counts = $inboundData?.LightingDevices.map(label => label.instrumentType).forEach(function (x) { counts[x] = (counts[x] || 0) + 1; })
+  const columns = ["Instrument", "Current Total", "Limit"]
 
 </script>
 
 {#if show}
-  <div transition:fly={{x: 250, opacity: 1}}>
-    <button on:click={() => {modal_show = true; show = false;}}>About</button>
+  <div transition:fly={{x: 800, opacity: 1}}>
+    <!-- <button on:click={() => {modal_show = true; show = false;}}>About</button> -->
     <table>
         <tr>
             {#each columns as column}
               <th>{column}</th>
             {/each}
         </tr>
-        <!-- {#each lxLabels as row}
+        {#each lxLabels as row}
           <tr>
-            <td contenteditable="true">{row.instrumentType}</td>
-            <td contenteditable="true"></td>
+            <td contenteditable="false">{row}</td>
+            <td contenteditable="false">current count</td>
+            <td contenteditable="true">limit</td>
           </tr>
-        {/each} -->
+        {/each}
     </table>
 
 
@@ -59,10 +52,14 @@ div {
   border-left: 1px solid #aaa;
   background: #fff;
   overflow-y: auto;
-	width: 10rem;
+	width: 15rem;
 }
 th{
   font-size: 12px;
-  font-weight: normal;
+  font-weight: bold;
+}
+td{
+  font-size: 11px;
+  text-align: left;
 }
 </style>

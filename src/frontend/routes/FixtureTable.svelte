@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {inboundData} from '../stores/fixtureStore'
+    import {inboundData, sendToVW} from '../stores/fixtureStore'
     import DataTable from "../components/dataTable.svelte";
     import TableFooter from "../components/tableFooter.svelte"
     import Sidebar from '../components/fixtureSidebar.svelte';
@@ -11,6 +11,7 @@
 
 <main>
     <h1>Fixture Table</h1>
+    <button on:click={() => sendToVW($inboundData)}></button>
     <button on:click={() => coutingsShow = !coutingsShow} id="countingsButton">Countings</button>
     <Sidebar bind:show={coutingsShow}></Sidebar>
     <DataTable></DataTable>

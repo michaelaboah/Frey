@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="ts"> 
 	import {inboundData} from '../stores/fixtureStore'
 
 	 
@@ -13,7 +13,7 @@
 	// let newRow = [...columns];
 </script>
 
-<table>
+<table on:change={() => inboundData.update}>
 	<!-- <h1>{$lights}</h1> -->
 	<tr>
 		{#each columns as column}
@@ -22,7 +22,7 @@
 	</tr>
 	
 	{#each fixtures as row}
-		<tr >
+		<tr>
 			<!-- {#each row as cell}
 			<td contenteditable="true" bind:innerHTML={cell} />
 			{/each}
@@ -38,7 +38,7 @@
 			<td contenteditable="true">{row.patch.toString()}</td>
 			<td contenteditable="true">{row.userField1.toString()}</td>
 			<td contenteditable="true">{row.userField2.toString()}</td>
-			<!-- <td>{row.position.toString()}</td> -->
+			<!-- <td>{row.position.toString().up}</td> -->
 		</tr>
 
 	{/each}

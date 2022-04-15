@@ -4,8 +4,8 @@ import {EventEmitter} from 'events'
 import cors from 'cors';
 
 
-let inbox: Wrap = {VWInfo: [], LightingDevices: []}
-let outbox: Wrap = {VWInfo: [], LightingDevices: []}
+let inbox: Wrap = {VWInfo: [], LightingDevices: []}  //The Raw Data from Vectorworks is stored in this object from the VWPost || An sent to the frontend via FreyurGet
+let outbox: Wrap = {VWInfo: [], LightingDevices: []} //The Raw Data from Vectorworks is stored in this object from the VWPost || An sent to the frontend via FreyurGet
 export const startDXServer = () =>{
     const server = express();
     server.use(express.json({limit: '5000mb'})); 
@@ -18,16 +18,33 @@ export const startDXServer = () =>{
         res.send( "Hello world!" );
     });
 
+    //Changed data from server to Vectorworks
     server.get('/VectorworksGet', (req:Request, res:Response)=> {
-        res.send(inbox)
+        res.send(outbox)
         res.end()
     });
 
+    //Data from Vectorworks into Server
     server.post('/VectorworksPost', (req:Request, res:Response)=> {
         const data: Wrap = req.body;
         events.emit('VectorworksPost', req.url)
         inbox = data
-        // console.log(data)
+        res.json({
+            // accepted
+        })
+        res.end()
+    })
+
+
+    //Raw Vectorworks Data to UI
+    server.get('/FreyurGet', (req:Request, res:Response)=> {
+        res.send(inbox)
+        res.end()
+    });
+    //Changed Data via UI to Vectorworks
+    server.post('/FreyurPost', (req:Request, res:Response)=> {
+        const data: Wrap = req.body;
+        outbox = data
         res.json({
             // accepted
         })
