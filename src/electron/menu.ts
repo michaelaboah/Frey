@@ -1,5 +1,6 @@
 import { app, BrowserWindow, dialog, } from "electron";
 import fs  from "fs";
+import path from "path";
 import { mainWindow } from ".";
 
 const isMac = process.platform === 'darwin'
@@ -29,7 +30,11 @@ export const template = [
       {label: 'New Window'},
       {type: 'separator'},
       {label: 'Open', accelarator: "CmdOrCtrl+O", click() {openFile()}},
-      {label: 'Open Recent'},
+      {label:"Open Recent", role:"recentdocuments",
+          submenu:[
+            {label:"Clear Recent", role:"clearrecentdocuments"}
+          ]
+      },
       {type: 'separator'},
       {label: 'Save', accelerator: "CommandOrControl+S"},
       {label: 'Save As', accelarator: "CommandOrControl+Shift+S", click() {saveAsFile()}},
@@ -128,6 +133,7 @@ const openFile = async():Promise<any> =>{
             return console.log(err)
         }
         else data
+        app.addRecentDocument(path.join(filePaths[0]))
     })
 }
 
@@ -146,6 +152,7 @@ const saveAsFile = async() =>{
             if(err) {
                 return console.log(err);
             }
+            app.addRecentDocument(path.join(filePath as string))
             console.log("The file was saved!");
         }); 
     }

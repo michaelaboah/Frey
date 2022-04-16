@@ -6,7 +6,8 @@ export const API = {
     // Create a method that calls to electron for the version.
     // Also set type declaration inline.
     getVersion: (): Promise<string> => ipcRenderer.invoke("GET/version"),
-    // getCpus: (): Promise<Systeminformation.CurrentLoadCpuData[]> => ipcRenderer.invoke("GET/CPUUsage"),
+    toggle: () => ipcRenderer.invoke('dark-mode:toggle'),
+    system: () => ipcRenderer.invoke('dark-mode:system'),
     onServerUpdated: (cb: (data: any) => void) => ipcRenderer.on('server-updated', (_, data) => cb(data))
 }
 

@@ -1,13 +1,12 @@
-import {app, BrowserWindow, Menu, Notification,
-  // nativeImage
-} from "electron";
-import { join } from "path";
+import {app, BrowserWindow, ipcMain, Menu, nativeTheme, Notification,} from "electron";
+import path, { join } from "path";
 import { parse } from "url";
 import { autoUpdater } from "electron-updater";
 import { events, startDXServer} from '../middle/serverDX'
 import logger from "./utils/logger";
 import settings from "./utils/settings";
-import { menuExtended, } from "./menu";
+import { template, } from "./menu";
+import fs from 'fs'
 
 const isProd = process.env.NODE_ENV === "production" || app.isPackaged;
 
@@ -16,11 +15,11 @@ settings.set("check", true);
 logger.info("Checking if settings store works correctly.");
 logger.info(settings.get("check") ? "Settings store works correctly." : "Settings store has a problem.");
 
-let window: BrowserWindow | null;
+export let mainWindow: BrowserWindow | null;
 let notification: Notification | null;
 
 const createWindow = () => {
-  window = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 900,
     height: 680,
     webPreferences: {
@@ -38,39 +37,56 @@ const createWindow = () => {
       : // in dev, target the host and port of the local rollup web server
         "http://localhost:5000";
 
-  window.loadURL(url).catch((err) => {
+  mainWindow.loadURL(url).catch((err) => {
     logger.error(JSON.stringify(err));
     app.quit();
   });
 
-  if (!isProd) window.webContents.openDevTools();
+  if (!isProd) mainWindow.webContents.openDevTools();
 
-  window.on("closed", () => {
-    window = null;
+  mainWindow.on("closed", () => {
+    mainWindow = null;
   });
+
+  ipcMain.handle('dark-mode:toggle', () => {
+    if (nativeTheme.shouldUseDarkColors) {
+      nativeTheme.themeSource = 'light'
+    } else {
+      nativeTheme.themeSource = 'dark'
+    }
+    return nativeTheme.shouldUseDarkColors
+  })
+
+  ipcMain.handle('dark-mode:system', () => {
+    nativeTheme.themeSource = 'system'
+  })
 
   startDXServer()
 };
+
+const fileName = 'recently-used.md'
+fs.writeFile(fileName, 'Lorem Ipsum', () => {
+  app.addRecentDocument(path.join(__dirname, fileName))
+})
 
 app.on("ready", () =>{
   createWindow()
 
   //Adds more menus to the ones that already exist on Macos
-  const menu = Menu.getApplicationMenu()
-  menu?.items[2]
-  menuExtended.forEach(i => menu?.append(i))
-  Menu.setApplicationMenu(menu)
+  //@ts-expect-error
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template)) // Try and find the correct type
 });
 
 // those two events are completely optional to subscrbe to, but that's a common way to get the
 // user experience people expect to have on macOS: do not quit the application directly
 // after the user close the last window, instead wait for Command + Q (or equivalent).
 app.on("window-all-closed", () => {
+  app.clearRecentDocuments()
   if (process.platform !== "darwin") app.quit();
 });
 
 app.on("activate", () => {
-  if (window === null) createWindow();
+  if (mainWindow === null) createWindow();
 });
 
 app.on("web-contents-created", (e, contents) => {
@@ -162,5 +178,5 @@ autoUpdater.on("error", (err) => {
 
 events.on('VectorworksPost', (data) =>{
   console.log('it pinged')
-  window!.webContents.send('server-updated', data)
+  mainWindow!.webContents.send('server-updated', data)
 })

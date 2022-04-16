@@ -1,44 +1,34 @@
 <script lang="ts"> 
-	import {inboundData} from '../stores/fixtureStore'
+	import {inboundData, sendToVW} from '../stores/fixtureStore'
 
 	 
 	
 	$: fixtures = $inboundData.LightingDevices.map((x) => {
 		const {channel, instrumentType, position, purpose, unitNumber, wattage, template1, color, patch, userField1, userField2} = x
-		return {channel, instrumentType, position, purpose, unitNumber, wattage, template1, color, patch, userField1, userField2}
+		return x
 	})
-
-	let columns = ["Channel", "Symbol", "Position", "Purpose", "Unit #", "Load", "Accessory", "Color", "Patch", "User 1", "User 2", "User 3"]
-
-	// let newRow = [...columns];
+	let columns = ["Channel", "Symbol", "Position", "Purpose", "Unit #", "Load", "Accessory", "Color", "Patch", "User 15", "User 2", "User 3"]
 </script>
-
-<table on:change={() => inboundData.update}>
-	<!-- <h1>{$lights}</h1> -->
+<table>
 	<tr>
 		{#each columns as column}
 			<th>{column}</th>
 		{/each}
 	</tr>
-	
 	{#each fixtures as row}
 		<tr>
-			<!-- {#each row as cell}
-			<td contenteditable="true" bind:innerHTML={cell} />
-			{/each}
-			<button on:click={() => deleteRow(row)}>X</button> -->
-			<td contenteditable="true" selected> {row.channel.toString()} </td>
-			<td contenteditable="true">{row.instrumentType.toString()}</td>
-			<td contenteditable="true">{row.position.toString()}</td>
-			<td contenteditable="true">{row.purpose.toString()}</td>
-			<td contenteditable="true">{row.unitNumber.toString()}</td>
-			<td contenteditable="true">{row.wattage.toString()}</td>
-			<td contenteditable="true">{row.template1.toString()}</td>
-			<td contenteditable="true">{row.color.toString()}</td>
-			<td contenteditable="true">{row.patch.toString()}</td>
-			<td contenteditable="true">{row.userField1.toString()}</td>
-			<td contenteditable="true">{row.userField2.toString()}</td>
-			<!-- <td>{row.position.toString().up}</td> -->
+			<td contenteditable bind:textContent={row.channel}> </td>
+			<td contenteditable bind:textContent={row.instrumentType}></td>
+			<td contenteditable bind:textContent={row.position}></td>
+			<td contenteditable bind:textContent={row.purpose}></td>
+			<!-- <td><input bind:value={row.purpose}/></td> -->
+			<td contenteditable bind:textContent={row.unitNumber}></td>
+			<td contenteditable bind:textContent={row.wattage}></td>
+			<td contenteditable bind:textContent={row.template1}></td>
+			<td contenteditable bind:textContent={row.color}></td>
+			<td contenteditable bind:textContent={row.patch}></td>
+			<td contenteditable bind:textContent={row.userField1}></td>
+			<td contenteditable bind:textContent={row.userField2}></td>
 		</tr>
 
 	{/each}
@@ -65,12 +55,8 @@
 	tr{
 		font-size: 13px;
 	}
-	td{
-		
-	}
-
     table{
-        color: rgb(3, 3, 4);
+        /* color: rgb(3, 3, 4); */
 		text-align: left;
 		width: 100%;
 		margin-bottom: 5%;

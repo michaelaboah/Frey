@@ -11,7 +11,6 @@ const createStore = () =>{
             return a+1;
         }) 
     }
-
     const decrement = () => {  
         update((a) => {
             let x = a-1
@@ -37,7 +36,8 @@ export const sendToVW = async (changes:Wrap)=> {
           },
           body: JSON.stringify(changes)
     })
-    console.log(request.status)
+    console.log(changes)
+    console.log(request)
 }
 
 

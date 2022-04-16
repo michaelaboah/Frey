@@ -14,14 +14,12 @@
     <button on:click={() => sendToVW($inboundData)}></button>
     <button on:click={() => coutingsShow = !coutingsShow} id="countingsButton">Countings</button>
     <Sidebar bind:show={coutingsShow}></Sidebar>
-    <DataTable></DataTable>
+    <DataTable on:change={() => sendToVW($inboundData)}></DataTable>
     <TableFooter bottomLeft='Fixture Count: {info?.fixtureCount}' bottomRight="File Name: {info?.fileName.split('/').pop()?.split("\\").pop()}"></TableFooter>
 </main>
 
 <style>
-    h1{
-        color:rgb(2, 3, 3)
-    }
+
 
     #countingsButton{
         position: relative;

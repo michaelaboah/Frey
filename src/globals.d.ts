@@ -1,10 +1,10 @@
 /// <reference types="svelte" />
 
-// import APP_BRIDGE from "./electron/preload"
+import {API} from "./electron/preload"
 
-// declare global {
-//   interface Window {api: typeof APP_BRIDGE}
-// }
+declare global {
+  interface Window {api: typeof API}
+}
 
 
 
