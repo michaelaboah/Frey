@@ -181,27 +181,3 @@ events.on('VectorworksPost', (data) =>{
   console.log('it pinged')
   mainWindow!.webContents.send('server-updated', data)
 })
-
-
-let script = 'tell application "Music" to get name'
-
-// fs.readFile("src/electron/AppleScripts/Test.applescript", (err, data) => {
-//   if(err){
-//     console.log(err)
-//     return null
-//   }
-//   else {
-//     console.log(data.toString())
-//     return data.toString()
-//   }
-// })
-
-applescript.execFile("src/electron/AppleScripts/TriggerFreyurRecieve.applescript", function(err: any, rtn: any[]) {
-  if (err) {
-    // Something went wrong!
-    console.log(err)
-  }
-  if (rtn.length > 0) {
-    console.log(rtn)
-  }
-});
