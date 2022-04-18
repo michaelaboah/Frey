@@ -1,12 +1,12 @@
 <script lang="ts"> 
 	import {inboundData, sendToVW} from '../stores/fixtureStore'
 
-	 
-	
 	$: fixtures = $inboundData.LightingDevices.map((x) => {
 		const {channel, instrumentType, position, purpose, unitNumber, wattage, template1, color, patch, userField1, userField2} = x
 		return x
 	})
+	 
+	
 	let columns = ["Channel", "Symbol", "Position", "Purpose", "Unit #", "Load", "Accessory", "Color", "Patch", "User 15", "User 2", "User 3"]
 </script>
 <table>

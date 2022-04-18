@@ -6,6 +6,7 @@ import cors from 'cors';
 
 let inbox: Wrap = {VWInfo: [], LightingDevices: []}  //The Raw Data from Vectorworks is stored in this object from the VWPost || An sent to the frontend via FreyurGet
 let outbox: Wrap = {VWInfo: [], LightingDevices: []} //The Raw Data from Vectorworks is stored in this object from the VWPost || An sent to the frontend via FreyurGet
+
 export const startDXServer = () =>{
     const server = express();
     server.use(express.json({limit: '5000mb'})); 
@@ -57,7 +58,7 @@ export const startDXServer = () =>{
 }
 
 
-
+export const setInbox = (data:Wrap) => {inbox = data, events.emit('VectorworksPost')}
 export const events = new EventEmitter();
 
 

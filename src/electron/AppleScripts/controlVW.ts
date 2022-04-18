@@ -1,32 +1,24 @@
-import { app } from "electron";
+// import { app } from "electron";
 
 var applescript = require('applescript');
 
-let check:boolean = true
-
-export const startExchangeCycle = (isMac:boolean) => {
-    if (isMac){
-           while (check) {
-                if (checkVWRunning()) {
-                    triggerSend()
-                    setTimeout(triggerRecieve, 5000) // trigger recieve in 3 minutes or 180000 milliseconds
-                }
-
-        } 
-    }
-    else return
-    //Implement PowerShell scripts
-
-}
-
-
 
   export const triggerSend = () =>{
-    runAppleScript("src/electron/AppleScripts/TriggerFreyurSend.applescript")
+    //macOss
+    if(process.platform === "darwin") runAppleScript("src/electron/AppleScripts/TriggerFreyurSend.applescript")
+    //Windows
+    else{
+        return
+    }
   }
 
   export const triggerRecieve = () =>{
-    runAppleScript("src/electron/AppleScripts/TriggerFreyurRecieve.applescript")
+      //macOS
+    if(process.platform === "darwin") runAppleScript("src/electron/AppleScripts/TriggerFreyurRecieve.applescript")
+    //Windows
+    else{
+        return
+    }
   }
 
   export const checkVWRunning = ():boolean =>{

@@ -3,26 +3,29 @@ import path, { join } from "path";
 import { parse } from "url";
 import { autoUpdater } from "electron-updater";
 import { events, startDXServer} from '../middle/serverDX'
-import logger from "./utils/logger";
-import settings from "./utils/settings";
+import logger from "./other/logger";
+import settings from "./other/settings";
 import { template, } from "./menu";
-import fs from 'fs'
-var applescript = require('applescript');
+import fs from 'fs';
+import { getWinRect, saveBounds } from './utilities/persistant'
 
 const isProd = process.env.NODE_ENV === "production" || app.isPackaged;
-
 logger.info("App starting...");
 settings.set("check", true);
 logger.info("Checking if settings store works correctly.");
 logger.info(settings.get("check") ? "Settings store works correctly." : "Settings store has a problem.");
 
-export let mainWindow: BrowserWindow | null;
+export let mainWindow: BrowserWindow;
 let notification: Notification | null;
 
 const createWindow = () => {
+  const bounds = getWinRect()
+
+  console.log(bounds)
   mainWindow = new BrowserWindow({
-    width: 900,
-    height: 680,
+    ...bounds,
+    minHeight: 600,
+    minWidth: 800,
     webPreferences: {
       devTools: isProd ? false : true,
       contextIsolation: true,
@@ -46,9 +49,14 @@ const createWindow = () => {
   if (!isProd) mainWindow.webContents.openDevTools();
 
   mainWindow.on("closed", () => {
-    mainWindow = null;
+    // mainWindow = null;
   });
+  // Persistant window size
+  mainWindow.on("resized", () => saveBounds(mainWindow.getBounds()))
+  mainWindow.on("moved", () => saveBounds(mainWindow.getBounds()))
 
+
+  //Dark mode toggle
   ipcMain.handle('dark-mode:toggle', () => {
     if (nativeTheme.shouldUseDarkColors) {
       nativeTheme.themeSource = 'light'
@@ -57,7 +65,7 @@ const createWindow = () => {
     }
     return nativeTheme.shouldUseDarkColors
   })
-
+  //Dark mode toggle
   ipcMain.handle('dark-mode:system', () => {
     nativeTheme.themeSource = 'system'
   })
@@ -65,14 +73,11 @@ const createWindow = () => {
   startDXServer()
 };
 
-const fileName = 'recently-used.md'
-fs.writeFile(fileName, 'Lorem Ipsum', () => {
-  app.addRecentDocument(path.join(__dirname, fileName))
-})
+
+// ************************ App Listeners ************************
 
 app.on("ready", () =>{
   createWindow()
-
   //Adds more menus to the ones that already exist on Macos
   //@ts-expect-error
   Menu.setApplicationMenu(Menu.buildFromTemplate(template)) // Try and find the correct type
@@ -119,7 +124,11 @@ app.on("web-contents-created", (e, contents) => {
     }
   });
 });
+// ************************ App Listeners ************************
 
+
+
+// ************************ Auto Updater ************************
 if (isProd)
   autoUpdater.checkForUpdates().catch((err) => {
     logger.error(JSON.stringify(err));
@@ -173,11 +182,12 @@ autoUpdater.on("error", (err) => {
   });
   notification.show();
 });
+// ************************ Auto Updater ************************
 
 
-
-
+// ************************ Others ************************
 events.on('VectorworksPost', (data) =>{
   console.log('it pinged')
   mainWindow!.webContents.send('server-updated', data)
 })
+// ************************ Others ************************

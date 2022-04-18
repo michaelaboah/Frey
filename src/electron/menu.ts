@@ -2,6 +2,9 @@ import { app, BrowserWindow, dialog, } from "electron";
 import fs  from "fs";
 import path from "path";
 import { mainWindow } from ".";
+import { Wrap } from "../globals";
+import { setInbox } from "../middle/serverDX";
+import { triggerRecieve, triggerSend } from "./AppleScripts/controlVW";
 
 const isMac = process.platform === 'darwin'
 
@@ -32,7 +35,7 @@ export const template = [
       {label: 'Open', accelarator: "CmdOrCtrl+O", click() {openFile()}},
       {label:"Open Recent", role:"recentdocuments",
           submenu:[
-            {label:"Clear Recent", role:"clearrecentdocuments"}
+            {label:"Clear Recent", role:"clearrecentdocuments", click() {console.log('hello')}}
           ]
       },
       {type: 'separator'},
@@ -84,6 +87,17 @@ export const template = [
       { role: 'togglefullscreen' }
     ]
   },
+  // Exchange Sync
+  {
+    label: 'Control Vectorworks',
+    submenu: [
+      {label: 'Send to Vectorworks', click() {triggerRecieve()}},
+      {label: 'Pull from Vectorworks', click() {triggerSend()}},
+      {label: 'Toggle Auto Sync', click() {console.log(`Not implemented yet`)}},
+      {type: 'separator'},
+    ]
+  },
+
   // { role: 'windowMenu' }
   {
     label: 'Window',
@@ -119,7 +133,7 @@ export const template = [
 // *************************** Menu Functions **************************
 
 const openFile = async():Promise<any> =>{
-    const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow as BrowserWindow,{
+    const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow ,{
         properties: ['openFile'],
         filters: [
             {name: 'JSON', extensions: ['json']},
@@ -132,13 +146,17 @@ const openFile = async():Promise<any> =>{
         if(err){
             return console.log(err)
         }
-        else data
-        app.addRecentDocument(path.join(filePaths[0]))
+        else {
+          setInbox(JSON.parse(data.toString())) 
+
+          app.addRecentDocument(path.join(filePaths[0]))
+        }
     })
 }
 
+
 const saveAsFile = async() =>{
-    const { canceled, filePath } = await dialog.showSaveDialog(mainWindow as BrowserWindow,{
+    const { canceled, filePath } = await dialog.showSaveDialog(mainWindow ,{
         properties: ['createDirectory'],
         filters: [
             {name: 'Json', extensions: ['json']},
@@ -148,7 +166,7 @@ const saveAsFile = async() =>{
         return;
     }
     else{
-        fs.writeFile(filePath as string, "InsertData Here Later", function(err) {
+        fs.writeFile(filePath as string, "Insert Data Here Later", function(err) {
             if(err) {
                 return console.log(err);
             }
