@@ -1,12 +1,22 @@
 <script > 
+	import Autocomplete from "./Autocomplete.svelte";
+	import {inboundData} from '../stores/fixtureStore'
 	export let tableContents
 	export let columns
+
+	// let counts = $inboundData?.LightingDevices.map(label => label.instrumentType).forEach(function (x) { counts[x] = (counts[x] || 0) + 1; })
+
 </script>
 <table>
 	<!-- Create a Hide Columns function -->
 	<tr>
 		{#each columns as column}
 			<th>{column}</th>
+		{/each}
+	</tr>
+	<tr>
+		{#each columns as autoCol}
+		<th><Autocomplete></Autocomplete></th>
 		{/each}
 	</tr>
 	{#each tableContents as row}
