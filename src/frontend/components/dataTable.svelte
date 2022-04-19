@@ -1,7 +1,8 @@
 <script lang="ts"> 
-	import {inboundData, sendToVW} from '../stores/fixtureStore'
+	import {inboundData} from '../stores/fixtureStore'
 
 	$: fixtures = $inboundData.LightingDevices.map((x) => {
+		//@ts-expect-error
 		const {channel, instrumentType, position, purpose, unitNumber, wattage, template1, color, patch, userField1, userField2} = x
 		return x
 	})
@@ -17,7 +18,7 @@
 	</tr>
 	{#each fixtures as row}
 		<tr>
-			<td contenteditable bind:textContent={row.channel}> </td>
+			<!-- <td contenteditable bind:textContent={row.channel}> </td> -->
 			<td contenteditable bind:textContent={row.instrumentType}></td>
 			<td contenteditable bind:textContent={row.position}></td>
 			<td contenteditable bind:textContent={row.purpose}></td>

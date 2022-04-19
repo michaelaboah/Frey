@@ -20,7 +20,11 @@
 
 {#if show}
   <div transition:fly={{x: 800, opacity: 1}}>
-    <!-- <button on:click={() => {modal_show = true; show = false;}}>About</button> -->
+    <button 
+        on:click={() => show = false}
+        id="sideBarClose"
+        >X
+    </button>
     <table>
         <tr>
             {#each columns as column}
@@ -35,10 +39,7 @@
           </tr>
         {/each}
     </table>
-
-
   </div>
-
 {/if}
 
 
@@ -50,7 +51,7 @@ div {
   height: 100%;
   padding: 2rem 1rem 0.6rem;
   border-left: 1px solid #aaa;
-  background: #fff;
+  background: rgb(44, 43, 43);
   overflow-y: auto;
 	width: 15rem;
 }
@@ -61,5 +62,9 @@ th{
 td{
   font-size: 11px;
   text-align: left;
+}
+
+#sideBarClose{
+  margin-left: 7rem;
 }
 </style>
