@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import  {Wrap} from '../../src/globals';
 import {EventEmitter} from 'events'
 import cors from 'cors';
+import { triggerRecieve, } from '../electron/AppleScripts/controlVW';
 
 
 let inbox: Wrap = {VWInfo: [], LightingDevices: []}  //The Raw Data from Vectorworks is stored in this object from the VWPost || An sent to the frontend via FreyurGet
@@ -50,6 +51,7 @@ export const startDXServer = () =>{
             // accepted
         })
         res.end()
+        triggerRecieve()
     })
     // start the Express server
     server.listen( port, () => {

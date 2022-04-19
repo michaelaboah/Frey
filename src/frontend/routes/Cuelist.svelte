@@ -1,25 +1,33 @@
-<script>
-import { count } from "../stores/fixtureStore";
-    // const increment = () => {  
-    //     count.update((a) => a+1) 
-    //     window.document.title = $count
-    // }
-
-   
-    // const decrement = () => count.update((a) => a-1)
-    // const reset = () => count.set(0)
-
+<script lang="ts">
+    import type {Cue} from '../../globals'
+    import Table from '../components/Table.svelte';
+    import TableFooter from '../components/tableFooter.svelte';
+    
+    let cueColumns: string[] = ['Cue Number', 'Intensity Fade Up', 'Intensity Fade Down', 'Focus', 'Color', 'Beam', 'Duration', 'Label']
+    let cueList: Cue[] = [
+        // {
+        //     cueNumber: 2,
+        //     intensityFadeUp: 3.0,
+        //     intensityFadeDown: 2.5,
+        //     focusFade: 3,
+        //     colorFade: 0,
+        //     beamFade: 0,
+        //     duration: 0,
+        //     cueLabel: "First Cue"
+        // }
+    ]
 </script>
 
 <main>
     <h1>Cuelist</h1>
-    <button on:click={count.increment}>increment</button>
-    <button on:click={count.decrement}>decrement</button>
-    <button on:click={count.reset}>reset</button>
+    <button id="addCue">Add Cue</button> 
+    <button id="deleteCue">Delete Cue</button>
+    <Table columns={cueColumns} tableContents={cueList}></Table>
+    <TableFooter bottomLeft="Cue Count: {cueList.length}" bottomRight=""></TableFooter>
 </main>
 
 <style>
-    h1{
-        color: blue
-    }
+#addCue{
+    left: 40rem;
+}
 </style>

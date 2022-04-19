@@ -2,25 +2,25 @@
 
 var applescript = require('applescript');
 
-
+  //Triggers the Freyur Send on the Vectorworks UI
   export const triggerSend = () =>{
     //macOss
-    if(process.platform === "darwin") runAppleScript("src/electron/AppleScripts/TriggerFreyurSend.applescript")
+    if(process.platform === "darwin" && checkVWRunning()) runAppleScript("src/electron/AppleScripts/TriggerFreyurSend.applescript")
     //Windows
     else{
         return
     }
   }
-
+  //Triggers the Freyur Recieve on the Vectorworks UI
   export const triggerRecieve = () =>{
       //macOS
-    if(process.platform === "darwin") runAppleScript("src/electron/AppleScripts/TriggerFreyurRecieve.applescript")
+    if(process.platform === "darwin" && checkVWRunning()) runAppleScript("src/electron/AppleScripts/TriggerFreyurRecieve.applescript")
     //Windows
     else{
         return
     }
   }
-
+  //Checks to see if vectorworks is running before executing the above scriptss
   export const checkVWRunning = ():boolean =>{
       let isRunning:boolean
     return applescript.execFile("src/electron/AppleScripts/IsVWRunning.applescript", function (err: any, rtn: any[]) {
