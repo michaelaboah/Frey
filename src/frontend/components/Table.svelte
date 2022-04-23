@@ -3,26 +3,34 @@
 	import {inboundData} from '../stores/fixtureStore'
 	export let tableContents
 	export let columns
-
-	// let counts = $inboundData?.LightingDevices.map(label => label.instrumentType).forEach(function (x) { counts[x] = (counts[x] || 0) + 1; })
-
+	// export let autoCompFields
+	
 </script>
 <table>
 	<!-- Create a Hide Columns function -->
+	<tr>
+		<Autocomplete></Autocomplete>
+	</tr>
 	<tr>
 		{#each columns as column}
 			<th>{column}</th>
 		{/each}
 	</tr>
 	<tr>
-		{#each columns as autoCol}
-		<th><Autocomplete></Autocomplete></th>
+		{#each tableContents as col}
+			
+			<!-- {#each Object.keys(row) as header} -->
+				<!-- <td>{header}</td> -->
+				<!-- <th><Autocomplete options={[...new Set(Object.keys(col))]}></Autocomplete></th> -->
+				<!-- {console.log(header)} -->
+				
+			<!-- {/each} -->
 		{/each}
 	</tr>
 	{#each tableContents as row}
 		<tr>
 			{#each Object.values(row) as cell}
-				<td contenteditable bind:textContent={cell}></td>
+				<td contenteditable="true" bind:textContent={cell}></td>
 			{/each}
 		</tr>
 	{/each}

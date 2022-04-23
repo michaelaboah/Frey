@@ -1,4 +1,4 @@
-<script lang="ts"> 
+<script > 
 	import {inboundData} from '../stores/fixtureStore'
 
 	$: fixtures = $inboundData.LightingDevices.map((x) => {
@@ -18,7 +18,7 @@
 	</tr>
 	{#each fixtures as row}
 		<tr>
-			<!-- <td contenteditable bind:textContent={row.channel}> </td> -->
+			<td contenteditable bind:textContent={row.channel}> </td>
 			<td contenteditable bind:textContent={row.instrumentType}></td>
 			<td contenteditable bind:textContent={row.position}></td>
 			<td contenteditable bind:textContent={row.purpose}></td>

@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import  {Wrap} from '../../src/globals';
+import {Wrap} from '../../src/globals';
 import {EventEmitter} from 'events'
 import cors from 'cors';
 import { triggerRecieve, } from '../electron/AppleScripts/controlVW';
@@ -7,27 +7,29 @@ import { triggerRecieve, } from '../electron/AppleScripts/controlVW';
 
 let inbox: Wrap = {VWInfo: [], LightingDevices: []}  //The Raw Data from Vectorworks is stored in this object from the VWPost || An sent to the frontend via FreyurGet
 let outbox: Wrap = {VWInfo: [], LightingDevices: []} //The Raw Data from Vectorworks is stored in this object from the VWPost || An sent to the frontend via FreyurGet
+let temporary = new Map<string, string>([])
+
 
 export const startDXServer = () =>{
-    const server = express();
-    server.use(express.json({limit: '5000mb'})); 
-    server.use(express.urlencoded({limit: '5000mb'}));
-    server.use(cors())
+    const app = express();
+    app.use(express.json({limit: '5000mb'})); 
+    app.use(express.urlencoded({limit: '5000mb'}));
+    app.use(cors())
     const port = 29212; // default port to listen
 
     // define a route handler for the default home page
-    server.get( "/", (req: Request, res: Response ) => {
+    app.get( "/", (req: Request, res: Response ) => {
         res.send( "Hello world!" );
     });
 
     //Changed data from server to Vectorworks
-    server.get('/VectorworksGet', (req:Request, res:Response)=> {
+    app.get('/VectorworksGet', (req:Request, res:Response)=> {
         res.send(outbox)
         res.end()
     });
 
     //Data from Vectorworks into Server
-    server.post('/VectorworksPost', (req:Request, res:Response)=> {
+    app.post('/VectorworksPost', (req:Request, res:Response)=> {
         const data: Wrap = req.body;
         events.emit('VectorworksPost', req.url)
         inbox = data
@@ -39,12 +41,12 @@ export const startDXServer = () =>{
 
 
     //Raw Vectorworks Data to UI
-    server.get('/FreyurGet', (req:Request, res:Response)=> {
+    app.get('/FreyurGet', (req:Request, res:Response)=> {
         res.send(inbox)
         res.end()
     });
     //Changed Data via UI to Vectorworks
-    server.post('/FreyurPost', (req:Request, res:Response)=> {
+    app.post('/FreyurPost', (req:Request, res:Response)=> {
         const data: Wrap = req.body;
         outbox = data
         res.json({
@@ -53,8 +55,26 @@ export const startDXServer = () =>{
         res.end()
         triggerRecieve()
     })
+
+
+
+
+
+    app.post('/Test', (req:Request, res:Response) => {
+        temporary = req.body;
+        res.json({})
+        console.log(temporary)
+        res.end()
+    })
+
+    app.get('/Test', (req:Request, res:Response) => {
+        res.send(temporary)
+        res.end()
+    })
+
+
     // start the Express server
-    server.listen( port, () => {
+    app.listen( port, () => {
         console.log( `server started at http://localhost:${ port }` );
     });
 }
