@@ -1,8 +1,7 @@
-import { app, BrowserWindow, dialog, } from "electron";
+import { app, dialog, } from "electron";
 import fs  from "fs";
 import path from "path";
 import { mainWindow } from ".";
-import { Wrap } from "../globals";
 import { setInbox } from "../middle/serverDX";
 import { triggerRecieve, triggerSend } from "./AppleScripts/controlVW";
 
@@ -14,6 +13,8 @@ export const template = [
     label: app.name,
     submenu: [
       { role: 'about' },
+      {label: "Check for Updates", click() {console.log('Check for updates: Not implemented')}},
+      {label: "Preferences", accelerator: "Cmd+,", click() {console.log('Check for updates: Not implemented')}},
       { type: 'separator' },
       { role: 'services' },
       { type: 'separator' },
@@ -35,12 +36,13 @@ export const template = [
       {label: 'Open', accelarator: "CmdOrCtrl+O", click() {openFile()}},
       {label:"Open Recent", role:"recentdocuments",
           submenu:[
-            {label:"Clear Recent", role:"clearrecentdocuments", click() {console.log('hello')}}
+            {label:"Clear Recent", role:"clearrecentdocuments", click() {app.clearRecentDocuments()}}
           ]
       },
       {type: 'separator'},
       {label: 'Save', accelerator: "CommandOrControl+S"},
       {label: 'Save As', accelarator: "CommandOrControl+Shift+S", click() {saveAsFile()}},
+      isMac ? {label: "Preferences", accelerator: 'Ctrl+,',} : {label: "Preferences", accelerator: 'Ctrl+,',} // This is fine
     ]
   },
   // { role: 'editMenu' }
@@ -148,7 +150,6 @@ const openFile = async():Promise<any> =>{
         }
         else {
           setInbox(JSON.parse(data.toString())) 
-
           app.addRecentDocument(path.join(filePaths[0]))
         }
     })
@@ -175,3 +176,4 @@ const saveAsFile = async() =>{
         }); 
     }
 }
+

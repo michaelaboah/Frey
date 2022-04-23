@@ -16,22 +16,38 @@ logger.info("Checking if settings store works correctly.");
 logger.info(settings.get("check") ? "Settings store works correctly." : "Settings store has a problem.");
 
 export let mainWindow: BrowserWindow;
-let notification: Notification | null;
+let notification: Notification;
+let splashScreen: BrowserWindow
+
+const createSplash = () => {
+  splashScreen = new BrowserWindow({
+    width: 500,
+    height: 300,
+    resizable: false,
+    transparent: true,
+    frame: false,
+    alwaysOnTop: true
+  })
+  splashScreen.loadFile('public/splash.html');
+  splashScreen.center();
+}
+
 
 const createWindow = () => {
   const bounds = getWinRect()
-
-  console.log(bounds)
   mainWindow = new BrowserWindow({
     ...bounds,
     minHeight: 600,
     minWidth: 800,
+    show: false,
     webPreferences: {
       devTools: isProd ? false : true,
       contextIsolation: true,
       preload: join(__dirname, 'preload.js'),
     },
   });
+
+  
 
   const url =
     // process.env.NODE_ENV === "production"
@@ -71,13 +87,16 @@ const createWindow = () => {
   })
 
   startDXServer()
+  splashScreen.close();
 };
 
 
 // ************************ App Listeners ************************
 
 app.on("ready", () =>{
+  createSplash()
   createWindow()
+  mainWindow.show()
   //Adds more menus to the ones that already exist on Macos
   //@ts-expect-error
   Menu.setApplicationMenu(Menu.buildFromTemplate(template)) // Try and find the correct type
@@ -93,6 +112,7 @@ app.on("window-all-closed", () => {
 
 app.on("activate", () => {
   if (mainWindow === null) createWindow();
+
 });
 
 app.on("web-contents-created", (e, contents) => {

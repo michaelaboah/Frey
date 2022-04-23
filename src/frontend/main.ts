@@ -9,17 +9,18 @@ const app = new App({
     name: "world",
   },
 });
+
+
 //@ts-expect-error
 document.getElementById('toggle-dark-mode').addEventListener('click', async () => {
-  //@ts-expect-error
-  const isDarkMode = await window.darkMode.toggle()
+  
+  const isDarkMode = await window.api.toggle()
   //@ts-expect-error
   document.getElementById('theme-source').innerHTML = isDarkMode ? 'Dark' : 'Light'
 })
 //@ts-expect-error
 document.getElementById('reset-to-system').addEventListener('click', async () => {
-  //@ts-expect-error
-  await window.darkMode.system()
+  await window.api.system()
   //@ts-expect-error
   document.getElementById('theme-source').innerHTML = 'System'
 })

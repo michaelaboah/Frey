@@ -28,8 +28,8 @@
   <!-- <h1>Hello {name}!</h1>
   <p>Visit the <a href="https://svelte.dev/tutorial">Svelte yo</a> to learn how to build Svelte apps.</p> -->
 
-  <!-- <button id="toggle-dark-mode">Toggle Dark Mode</button>
-  <button id="reset-to-system">Reset to System Theme</button> -->
+  <button id="toggle-dark-mode">Toggle Dark Mode</button>
+  <button id="reset-to-system">Reset to System Theme</button>
 </main>
 
 <style>
