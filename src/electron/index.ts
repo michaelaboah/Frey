@@ -16,29 +16,17 @@ logger.info("Checking if settings store works correctly.");
 logger.info(settings.get("check") ? "Settings store works correctly." : "Settings store has a problem.");
 
 export let mainWindow: BrowserWindow;
-let notification: Notification;
 let splashScreen: BrowserWindow
-
-const createSplash = () => {
-  splashScreen = new BrowserWindow({
-    width: 500,
-    height: 300,
-    resizable: false,
-    transparent: true,
-    frame: false,
-    alwaysOnTop: true
-  })
-  splashScreen.loadFile('public/splash.html');
-  splashScreen.center();
-}
-
-
+let notification: Notification | null;
+const isMac = process.platform === 'darwin'
 const createWindow = () => {
   const bounds = getWinRect()
   mainWindow = new BrowserWindow({
     ...bounds,
     minHeight: 600,
     minWidth: 800,
+    autoHideMenuBar: true,
+    // frame: false,
     show: false,
     webPreferences: {
       devTools: isProd ? false : true,
@@ -46,9 +34,9 @@ const createWindow = () => {
       preload: join(__dirname, 'preload.js'),
     },
   });
-
-
-
+  if(isMac) {
+    mainWindow.autoHideMenuBar = false
+  }
   const url =
     // process.env.NODE_ENV === "production"
     isProd
@@ -61,9 +49,6 @@ const createWindow = () => {
     logger.error(JSON.stringify(err));
     app.quit();
   });
-
-
-
 
   if (!isProd) mainWindow.webContents.openDevTools();
 
@@ -100,15 +85,32 @@ const createWindow = () => {
   })
 };
 
+const createSplash = () => {
+  splashScreen = new BrowserWindow({
+    width: 500,
+    height: 300,
+    show: true,
+    frame: false,
+    resizable: false,
+    alwaysOnTop: true,
+  })
+  splashScreen.loadFile('public/splash.html');
+  splashScreen.center()
+}
 
 // ************************ App Listeners ************************
 
 app.on("ready", () =>{
-  createSplash()
-  createWindow()
+  createSplash();
+  createWindow();
   //Adds more menus to the ones that already exist on Macos
-  //@ts-expect-error
-  Menu.setApplicationMenu(Menu.buildFromTemplate(template)) // Try and find the correct type
+  if(isMac){
+    //@ts-expect-error
+    Menu.setApplicationMenu(Menu.buildFromTemplate(template)) // Try and find the correct type
+  }
+  else{
+    const customMenu = new Menu()
+  }
 });
 
 // those two events are completely optional to subscrbe to, but that's a common way to get the
