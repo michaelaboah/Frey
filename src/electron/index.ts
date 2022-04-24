@@ -1,12 +1,12 @@
 import {app, BrowserWindow, ipcMain, Menu, nativeTheme, Notification,} from "electron";
-import path, { join } from "path";
+import { join } from "path";
 import { parse } from "url";
 import { autoUpdater } from "electron-updater";
+
 import { events, startDXServer} from '../middle/serverDX'
 import logger from "./other/logger";
 import settings from "./other/settings";
 import { template, } from "./menu";
-import fs from 'fs';
 import { getWinRect, saveBounds } from './utilities/persistant'
 
 const isProd = process.env.NODE_ENV === "production" || app.isPackaged;
@@ -47,7 +47,7 @@ const createWindow = () => {
     },
   });
 
-  
+
 
   const url =
     // process.env.NODE_ENV === "production"
@@ -62,6 +62,9 @@ const createWindow = () => {
     app.quit();
   });
 
+
+
+
   if (!isProd) mainWindow.webContents.openDevTools();
 
   mainWindow.on("closed", () => {
@@ -70,6 +73,7 @@ const createWindow = () => {
   // Persistant window size
   mainWindow.on("resized", () => saveBounds(mainWindow.getBounds()))
   mainWindow.on("moved", () => saveBounds(mainWindow.getBounds()))
+
 
 
   //Dark mode toggle
@@ -87,7 +91,13 @@ const createWindow = () => {
   })
 
   startDXServer()
-  splashScreen.close();
+
+  mainWindow.once('ready-to-show', () =>{
+    setTimeout(() => {
+      splashScreen.close();
+      mainWindow.show()
+    }, 5000)
+  })
 };
 
 
@@ -96,7 +106,6 @@ const createWindow = () => {
 app.on("ready", () =>{
   createSplash()
   createWindow()
-  mainWindow.show()
   //Adds more menus to the ones that already exist on Macos
   //@ts-expect-error
   Menu.setApplicationMenu(Menu.buildFromTemplate(template)) // Try and find the correct type
@@ -112,7 +121,6 @@ app.on("window-all-closed", () => {
 
 app.on("activate", () => {
   if (mainWindow === null) createWindow();
-
 });
 
 app.on("web-contents-created", (e, contents) => {
