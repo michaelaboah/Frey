@@ -3,7 +3,7 @@ import { join } from "path";
 import { parse } from "url";
 import { autoUpdater } from "electron-updater";
 
-import { events, startDXServer} from '../middle/serverDX'
+import { serverEvents, startDXServer} from '../middle/serverDX'
 import logger from "./other/logger";
 import settings from "./other/settings";
 import { template, } from "./menu";
@@ -214,8 +214,14 @@ autoUpdater.on("error", (err) => {
 
 
 // ************************ Others ************************
-events.on('VectorworksPost', (data) =>{
+serverEvents.on('VectorworksPost', (data) =>{
   console.log('it pinged')
   mainWindow!.webContents.send('server-updated', data)
+})
+
+
+
+ipcMain.on('open-window', (event, args) => {
+  console.log(args)
 })
 // ************************ Others ************************

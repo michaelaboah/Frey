@@ -31,7 +31,7 @@ export const startDXServer = () =>{
     //Data from Vectorworks into Server
     app.post('/VectorworksPost', (req:Request, res:Response)=> {
         const data: Wrap = req.body;
-        events.emit('VectorworksPost', req.url)
+        serverEvents.emit('VectorworksPost', req.url)
         inbox = data
         res.json({
             // accepted
@@ -80,8 +80,8 @@ export const startDXServer = () =>{
 }
 
 
-export const setInbox = (data:Wrap) => {inbox = data, events.emit('VectorworksPost')}
-export const events = new EventEmitter();
+export const setInbox = (data:Wrap) => {inbox = data, serverEvents.emit('VectorworksPost')}
+export const serverEvents = new EventEmitter();
 
 
 

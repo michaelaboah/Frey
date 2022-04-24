@@ -8,7 +8,8 @@ export const API = {
     getVersion: (): Promise<string> => ipcRenderer.invoke("GET/version"),
     toggle: () => ipcRenderer.invoke('dark-mode:toggle'),
     system: () => ipcRenderer.invoke('dark-mode:system'),
-    onServerUpdated: (cb: (data: any) => void) => ipcRenderer.on('server-updated', (_, data) => cb(data))
+    onServerUpdated: (cb: (data: any) => void) => ipcRenderer.on('server-updated', (_, data) => cb(data)),
+    openWindow: (message:string) => ipcRenderer.send('open-window', message),
 }
 
 

@@ -8,12 +8,14 @@
   import Cuelist from "./routes/Cuelist.svelte";
   import FixtureTable from "./routes/FixtureTable.svelte";
   import Focus from "./routes/Focus.svelte";
+import Preferences from "./routes/Preferences.svelte";
 
   let routes = {
     "/": FixtureTable,
     "/Cuelist": Cuelist,
     "/Budget": Budget,
     "/Focus": Focus,
+    "/Preferences": Preferences
   }
 </script>
 
@@ -23,6 +25,7 @@
     <a href="#/Cuelist"> Cuelist</a>
     <a href="#/Budget"> Budget</a>
     <a href="#/Focus"> Focus</a>
+    <a href="#/Preferences"> Preferences</a>
   </nav>
   <Router {routes}/>
   <!-- <h1>Hello {name}!</h1>

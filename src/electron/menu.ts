@@ -14,7 +14,12 @@ export const template = [
     submenu: [
       { role: 'about' },
       {label: "Check for Updates", click() {console.log('Check for updates: Not implemented')}},
-      {label: "Preferences", accelerator: "Cmd+,", click() {console.log('Check for updates: Not implemented')}},
+      {label: "Preferences", accelerator: "Cmd+,", 
+      click() {
+          window.api.openWindow('hello from menu')
+          console.log('Test preferences click')
+        }
+      },
       { type: 'separator' },
       { role: 'services' },
       { type: 'separator' },
