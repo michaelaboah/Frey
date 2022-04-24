@@ -17,7 +17,7 @@ logger.info(settings.get("check") ? "Settings store works correctly." : "Setting
 
 export let mainWindow: BrowserWindow;
 let notification: Notification | null;
-
+const isMac = process.platform === 'darwin'
 const createWindow = () => {
   const bounds = getWinRect()
 
@@ -26,13 +26,17 @@ const createWindow = () => {
     ...bounds,
     minHeight: 600,
     minWidth: 800,
+    autoHideMenuBar: true,
+    frame: false,
     webPreferences: {
       devTools: isProd ? false : true,
       contextIsolation: true,
       preload: join(__dirname, 'preload.js'),
     },
   });
-
+  if(isMac) {
+    mainWindow.autoHideMenuBar = false
+  }
   const url =
     // process.env.NODE_ENV === "production"
     isProd
@@ -79,8 +83,14 @@ const createWindow = () => {
 app.on("ready", () =>{
   createWindow()
   //Adds more menus to the ones that already exist on Macos
-  //@ts-expect-error
-  Menu.setApplicationMenu(Menu.buildFromTemplate(template)) // Try and find the correct type
+  if(isMac){
+    //@ts-expect-error
+    Menu.setApplicationMenu(Menu.buildFromTemplate(template)) // Try and find the correct type
+  }
+  else{
+    const customMenu = new Menu()
+    
+  }
 });
 
 // those two events are completely optional to subscrbe to, but that's a common way to get the
