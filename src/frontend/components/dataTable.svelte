@@ -1,14 +1,18 @@
-<script > 
-	import {inboundData} from '../stores/fixtureStore'
+<script>
 
+	import {inboundData, editArray} from '../stores/fixtureStore'
+	
 	$: fixtures = $inboundData.LightingDevices.map((x) => {
 		//@ts-expect-error
-		const {channel, instrumentType, position, purpose, unitNumber, wattage, template1, color, patch, userField1, userField2} = x
+		const {channel, instrumentType, position, purpose, unitNumber, wattage, template1, color, patch, userField1, userField2, __UID} = x
 		return x
 	})
-	 
-	
-	let columns = ["Channel", "Symbol", "Position", "Purpose", "Unit #", "Load", "Accessory", "Color", "Patch", "User 15", "User 2", "User 3"]
+	let columns = ["Channel", "Symbol", "Position", "Purpose", "Unit #", "Load", "Accessory", "Color", "Patch", "User 15", "User 2", "UID"]
+	let isFocused = false;
+
+	const onInput = (e) => value = e.target.value;
+	const onFocus = () => isFocused = true;
+	const onBlur = () => isFocused = false;
 </script>
 <table>
 	<tr>
@@ -18,7 +22,7 @@
 	</tr>
 	{#each fixtures as row}
 		<tr>
-			<td contenteditable bind:textContent={row.channel}> </td>
+			<td contenteditable bind:textContent={row.channel} on:input={() => {editArray.addChange('channel', row.channel.toString())}} on:focus={onFocus}> </td>
 			<td contenteditable bind:textContent={row.instrumentType}></td>
 			<td contenteditable bind:textContent={row.position}></td>
 			<td contenteditable bind:textContent={row.purpose}></td>
@@ -30,6 +34,7 @@
 			<td contenteditable bind:textContent={row.patch}></td>
 			<td contenteditable bind:textContent={row.userField1}></td>
 			<td contenteditable bind:textContent={row.userField2}></td>
+			<td contenteditable bind:textContent={row.__UID}></td>
 		</tr>
 
 	{/each}

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {inboundData, sendToVW, tableTest, newAlgTest} from '../stores/fixtureStore'
+    import {inboundData, sendToVW, editArray, newAlgTest} from '../stores/fixtureStore'
     import TableFooter from "../components/tableFooter.svelte"
     import Sidebar from '../components/fixtureSidebar.svelte';
     import DataTable from '../components/dataTable.svelte'
@@ -67,14 +67,20 @@
     //     }
     // })
 
-    let foo = $tableTest.set("instrumentType", "ETC Source4 26deg 750W")
+    $editArray.push(new Map<string, string>().set("frameSize", "6.25\"").set("fixtureMode", "ETC Source 4 26.lit"))
+    $editArray.push(new Map<string, string>().set("wattage", "750W").set("fixtureMode", "ETC Source 4 26.lit"))
 
-    console.log(foo.get('instrumentType'))
+    
+    // export const addChange = (key:string, value:string) => {
+    //     const changedValue = new Map<string, string>().set(key, value);
+    //     $editArray.push(changedValue);
+    // }
+
 </script>
 <main>
     <h1>Fixture Table</h1>
     <button on:click={() => sendToVW($inboundData)}>Send to Vectorworks</button>
-    <button on:click={() => newAlgTest($tableTest)}> Test Table</button>
+    <button on:click={() => newAlgTest($editArray)}> Test Table</button>
     <button on:click={() => coutingsShow = !coutingsShow}  id="countingsButton">Countings</button>
     <Sidebar bind:show={coutingsShow}></Sidebar>
     <!-- <Table columns={columns} tableContents={fixtures}></Table> -->
@@ -83,8 +89,6 @@
 </main>
 
 <style>
-
-
     #countingsButton{
         position: relative;
         left: 30%;
