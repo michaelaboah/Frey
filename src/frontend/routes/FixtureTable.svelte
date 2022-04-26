@@ -79,11 +79,11 @@
 </script>
 <main>
     <h1>Fixture Table</h1>
+
     <button on:click={() => sendToVW($inboundData)}>Send to Vectorworks</button>
     <button on:click={() => newAlgTest($editArray)}> Test Table</button>
     <button on:click={() => coutingsShow = !coutingsShow}  id="countingsButton">Countings</button>
     <Sidebar bind:show={coutingsShow}></Sidebar>
-    <!-- <Table columns={columns} tableContents={fixtures}></Table> -->
     <DataTable></DataTable>
     <TableFooter bottomLeft='Fixture Count: {info?.fixtureCount}' bottomRight="File Name: {info?.fileName.split('/').pop()?.split("\\").pop()}"></TableFooter>
 </main>
@@ -93,4 +93,6 @@
         position: relative;
         left: 30%;
     }
+
+
 </style>

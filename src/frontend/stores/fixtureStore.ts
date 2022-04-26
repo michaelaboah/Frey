@@ -49,6 +49,12 @@ const lookAhead = () => {
 
 
 export const newAlgTest = async (params:Array<Map<string, string>>) => {
+    // console.log(params.slice(-1))
+    // const lastChange = params.slice(-1)
+    if(params.map(i => i.keys()).length > 1){
+        console.log(params.map(i => i.keys()));
+    }
+
     const request = await fetch("http://localhost:29212/Test", {
         method: 'POST',
         headers: {

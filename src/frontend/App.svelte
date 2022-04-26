@@ -1,21 +1,22 @@
-
-
 <script lang="ts">
-  export let name: string;
   import Router from "svelte-spa-router"
 
   import Budget from "./routes/Budget.svelte";
   import Cuelist from "./routes/Cuelist.svelte";
   import FixtureTable from "./routes/FixtureTable.svelte";
   import Focus from "./routes/Focus.svelte";
-import Preferences from "./routes/Preferences.svelte";
+  import Preferences from "./routes/Preferences.svelte";
+  import Cloud from "./routes/PreferencesRoutes/Cloud.svelte"
+  import Licensing from "./routes/PreferencesRoutes/Licensing.svelte";
 
-  let routes = {
+  const routes = {
     "/": FixtureTable,
     "/Cuelist": Cuelist,
     "/Budget": Budget,
     "/Focus": Focus,
-    "/Preferences": Preferences
+    "/Preferences/Cloud": Cloud,
+    "/Preferences": Preferences,
+    "/Preferences/Licensing": Licensing
   }
 </script>
 
@@ -26,14 +27,16 @@ import Preferences from "./routes/Preferences.svelte";
     <a href="#/Budget"> Budget</a>
     <a href="#/Focus"> Focus</a>
     <a href="#/Preferences"> Preferences</a>
+  
   </nav>
   <Router {routes}/>
-  <!-- <h1>Hello {name}!</h1>
-  <p>Visit the <a href="https://svelte.dev/tutorial">Svelte yo</a> to learn how to build Svelte apps.</p> -->
-
-  <button id="toggle-dark-mode">Toggle Dark Mode</button>
-  <button id="reset-to-system">Reset to System Theme</button>
 </main>
+
+
+
+  <!-- <button id="toggle-dark-mode">Toggle Dark Mode</button>
+  <button id="reset-to-system">Reset to System Theme</button> -->
+
 
 <style>
   main {
@@ -42,10 +45,17 @@ import Preferences from "./routes/Preferences.svelte";
     max-width: 240px;
     margin: 0 auto;
   }
+  
 
   @media (min-width: 640px) {
     main {
       max-width: none;
     }
   }
+
+  /* header{
+    margin: auto;
+    background-color: red;
+
+  } */
 </style>

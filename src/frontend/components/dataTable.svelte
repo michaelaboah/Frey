@@ -9,7 +9,7 @@
 	})
 	let columns = ["Channel", "Symbol", "Position", "Purpose", "Unit #", "Load", "Accessory", "Color", "Patch", "User 15", "User 2", "UID"]
 	let isFocused = false;
-
+	let value = 'test'
 	const onInput = (e) => value = e.target.value;
 	const onFocus = () => isFocused = true;
 	const onBlur = () => isFocused = false;
@@ -22,8 +22,8 @@
 	</tr>
 	{#each fixtures as row}
 		<tr>
-			<td contenteditable bind:textContent={row.channel} on:input={() => {editArray.addChange('channel', row.channel.toString())}} on:focus={onFocus}> </td>
-			<td contenteditable bind:textContent={row.instrumentType}></td>
+			<td contenteditable bind:textContent={row.channel} on:input={() => {editArray.addChange('channel', row.channel.toString())}}> </td>
+			<td contenteditable bind:textContent={row.instrumentType} on:focus={onFocus} on:blur={onBlur} {value}></td>
 			<td contenteditable bind:textContent={row.position}></td>
 			<td contenteditable bind:textContent={row.purpose}></td>
 			<!-- <td><input bind:value={row.purpose}/></td> -->
@@ -36,7 +36,7 @@
 			<td contenteditable bind:textContent={row.userField2}></td>
 			<td contenteditable bind:textContent={row.__UID}></td>
 		</tr>
-
+		<h1>{row.channel}</h1>
 	{/each}
 	<!-- <tr style="color: grey">
 		{#each newRow as column}

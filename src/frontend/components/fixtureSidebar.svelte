@@ -51,7 +51,7 @@ div {
   height: 100%;
   padding: 2rem 1rem 0.6rem;
   border-left: 1px solid #aaa;
-  /* background: rgb(44, 43, 43); */
+  background: rgb(30, 31, 32);
   overflow-y: auto;
 	width: 15rem;
 }

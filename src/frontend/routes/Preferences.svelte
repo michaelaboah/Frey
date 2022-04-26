@@ -1,27 +1,42 @@
-<script >
-    import Router from "svelte-spa-router"
-    import Modal from "../components/Modal.svelte";
-    import Licensing from "./PreferencesRoutes/Licensing.svelte";
-    import General from "./PreferencesRoutes/General.svelte"
-    import Cloud from "./PreferencesRoutes/Cloud.svelte"
+<script lang="ts">
+    import VerticalNavBar from "../components/VerticalNavBar.svelte";
 
-    export let show = true;
-    const prefRoutes = {
-        "/Preferences": General,
-        "/PreferencesRoutes/Cloud": Cloud,
-        "/PreferencesRoutes/Licensing": Licensing
-    }
-
-    window.api.openWindow('hello')
+    let current = 'linkSelected'
 </script>
 
 <div>
-    <Modal shown={show}>
-        <nav>
-            <a href="#/PreferencesRoutes/Preferences"> General </a>
-            <a href="#PreferencesRoutes/Cloud"> Cloud </a>
-            <a href="#/PreferencesRoutes/Licensing"> Licensing </a>
-        </nav>
-        <Router {prefRoutes}/>    
-    </Modal>
+    
+    <VerticalNavBar>
+            <a href="#/Preferences/" 
+                class:selected="{current === 'linkSelected'}"
+                on:click="{() => current = 'linkSelected'}"
+            > General</a> 
+            <a href="#/Preferences/Cloud"> Cloud</a> 
+            <a href="#/Preferences/Licensing" > Licensing</a> 
+
+    </VerticalNavBar>
 </div>
+<main>
+    <h1>General Preferences</h1>
+    <h3 class="Subjects">Appearance</h3>
+    <br class="separator">
+    <button id="darkModeButton" on:click={() => window.api.toggle()}> Toggle Theme</button>
+</main>
+
+<style>
+    main{
+        padding-left: 7%;
+        margin-right: 7%;
+    }
+    #darkModeButton{
+        position: fixed;
+        top: 12%;
+        left: 17%;
+    }
+    .Subjects{
+        text-align: left;
+    }
+</style>
+
+
+
