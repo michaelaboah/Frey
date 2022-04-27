@@ -1,19 +1,17 @@
-
-<Modal bind:shown={modal_show} />
-
 <script lang="ts">
+
   import { fly } from 'svelte/transition';
-  import Modal from './Modal.svelte';
   import {inboundData} from '../stores/fixtureStore'
 
   export let show = false;
-  let modal_show = false;
 
 
-  $:lxLabels = $inboundData?.LightingDevices.map(label => label.instrumentType)
-  .filter((item, index, array) => array.indexOf(item) == index);
+  $:lxLabels = $inboundData?.LightingDevices.map(label => label.instrumentType).filter((item, index, array) => array.indexOf(item) == index);
+  $:count = $inboundData?.LightingDevices.reduce<Record<string, number>>((accumulator, label) => {
+    return {...accumulator, [label.instrumentType]: (accumulator[label.instrumentType] || 0) + 1};
+  }, {}) as Record<string, number>;
 
-// let counts = $inboundData?.LightingDevices.map(label => label.instrumentType).forEach(function (x) { counts[x] = (counts[x] || 0) + 1; })
+  
   const columns = ["Instrument", "Current Total", "Limit"]
 
 </script>
@@ -23,7 +21,7 @@
     <button 
         on:click={() => show = false}
         id="sideBarClose"
-        >X
+    >Close
     </button>
     <table>
         <tr>
@@ -34,7 +32,7 @@
         {#each lxLabels as row}
           <tr>
             <td contenteditable="false">{row}</td>
-            <td contenteditable="false">current count</td>
+            <td contenteditable="false">{count[row]}</td>
             <td contenteditable="true">limit</td>
           </tr>
         {/each}
@@ -56,11 +54,11 @@ div {
 	width: 15rem;
 }
 th{
-  font-size: 12px;
+  font-size: 14px;
   font-weight: bold;
 }
 td{
-  font-size: 11px;
+  font-size: 13px;
   text-align: left;
 }
 

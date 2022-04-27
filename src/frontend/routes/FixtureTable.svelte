@@ -77,12 +77,15 @@
     // }
 
 </script>
-<main>
+<header>
     <h1>Fixture Table</h1>
 
     <button on:click={() => sendToVW($inboundData)}>Send to Vectorworks</button>
     <button on:click={() => newAlgTest($editArray)}> Test Table</button>
     <button on:click={() => coutingsShow = !coutingsShow}  id="countingsButton">Countings</button>
+</header>
+
+<main>
     <Sidebar bind:show={coutingsShow}></Sidebar>
     <DataTable></DataTable>
     <TableFooter bottomLeft='Fixture Count: {info?.fixtureCount}' bottomRight="File Name: {info?.fileName.split('/').pop()?.split("\\").pop()}"></TableFooter>
@@ -93,6 +96,8 @@
         position: relative;
         left: 30%;
     }
-
+    header{
+        position: inherit;
+    }
 
 </style>

@@ -26,7 +26,6 @@
 			<td contenteditable bind:textContent={row.instrumentType} on:focus={onFocus} on:blur={onBlur} {value}></td>
 			<td contenteditable bind:textContent={row.position}></td>
 			<td contenteditable bind:textContent={row.purpose}></td>
-			<!-- <td><input bind:value={row.purpose}/></td> -->
 			<td contenteditable bind:textContent={row.unitNumber}></td>
 			<td contenteditable bind:textContent={row.wattage}></td>
 			<td contenteditable bind:textContent={row.template1}></td>
@@ -36,7 +35,6 @@
 			<td contenteditable bind:textContent={row.userField2}></td>
 			<td contenteditable bind:textContent={row.__UID}></td>
 		</tr>
-		<h1>{row.channel}</h1>
 	{/each}
 	<!-- <tr style="color: grey">
 		{#each newRow as column}
